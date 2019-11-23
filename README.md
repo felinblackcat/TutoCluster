@@ -112,4 +112,17 @@ sudo pcs status resources
 
 - Ahora verificamos en un navegador 10.2.0.20
 
+# Damos de baja a cualquiera de los nodos y el servidor sigue en pie
 
+- Dar de baja nodo1
+sudo pcs cluster stop cloud.nodo1
+
+- Dar de baja nodo2
+sudo pcs cluster start cloud.nodo1
+sudo pcs cluster stop cloud.nodo2
+
+Hasta aca siempre hay respuesta de la pagina pero si ejecutamos:
+
+sudo pcs cluster stop --all
+
+Ya no abra respuesta.
