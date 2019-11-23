@@ -53,7 +53,7 @@ Cambiamos la contraseña del usuario hacluster
 # Configuración adaptador de red con ip estatica:
 - sudo nano /etc/network/interfaces
 - Se deja como en la imagen:
-(https://raw.githubusercontent.com/felinblackcat/TutoCluster/master/Red.png)
+![Problema para cargar](https://raw.githubusercontent.com/felinblackcat/TutoCluster/master/Red.png)
 Clonanos esta maquina 2 veces para tener otros dos nodos y les configuramos el hostname y las ipsstaticas así:
 
 # Hostname      IP
