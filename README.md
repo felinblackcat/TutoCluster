@@ -54,13 +54,62 @@ Cambiamos la contraseña del usuario hacluster
 - sudo nano /etc/network/interfaces
 - Se deja como en la imagen:
 
+Clonanos esta maquina 2 veces para tener otros dos nodos y les configuramos el hostname y las ipsstaticas así:
 
+# Hostname      IP
+Nodo2           10.2.0.2
+Nodo3           10.2.0.3
+netmask         255.255.0.0
+gateway         10.2.0.1
 
+# Configuración del archivo hosts en cada nodo
+cloud.nodo1     10.2.0.1
+cloud.nodo1     10.2.0.2
+cloud.nodo1     10.2.0.3
 
+Antes de proceder a configurar el cluster hay que destruir el cluster inicial, en ocaciones el archivo de configuración inicial presenta problemas, esto hay que hacerlo en cada nodo:
 
+- sudo pcs cluster destroy
 
+# Configuración del cluster
 
+- Logueo en para cada nodo:
+sudo pcs cluster auth cloud.nodo1 cloud.nodo2 -u hacluster -p "contraseña_colocada" --force
+- La respuesta para cada nodo debe ser:
+nombre_nodo: authorized
 
+- Configuramos nombre del cluster y añadimos los nodos.
+sudo pcs cluster setup --name mycluster cloud.node1 cloud.nodo2
+# Si no hicieron el comando para destruir el cluster antes de todo, este comando les tirara error, por que el sistema no puede acceder a un archivo de configuración que solo tiene permisos de lectura. 
 
+- Configuraciones de los nodos:
+sudo pcs cluster enable --all //habilitación del nodo con el inicio del sistema operativo
+sudo pcs cluster start --all //iniciar todos los nodos
+
+- Verificamos el estado del cluster
+sudo pcs status
+
+- Configuraciones extras:
+sudo pcs property set stonith-enabled=false
+sudo pcs property set no-quorum-policy=ignore
+
+- Verificamos que si queden como queremos:
+sudo pcs property list
+
+# Configuración de los servicios:
+
+- IPVirtual: 10.2.0.20 que es la que recibira todas las peticiones http
+sudo pcs resource create fl_ip ocf:heartbeat:IPaddr2 ip=10.2.0.20 cidr_netmask=16 op monitor interval=5s
+
+- Nginx: Servidor http
+sudo pcs resource create web_server ocf:heartbeat:nginx configfile="/etc/nginx/nginx.conf" op monitor timeout="5s" interval="5s"
+
+- En ocaciones hay que reiniciar el servicio del nginx
+sudo systemctl start nginx
+
+- Verificamos el estado de los servicios
+sudo pcs status resources
+
+- Ahora verificamos en un navegador 10.2.0.20
 
 
