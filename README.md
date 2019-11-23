@@ -20,6 +20,7 @@ Se configurara un Cluster High Availability en Ubuntu Server 16.
 - 1 procesador.
 - 1gb de RAM.
 - 8mb memoria de video.
+- 10gb Disco duro.
 
 # Procedimiento
 
