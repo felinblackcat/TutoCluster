@@ -102,7 +102,7 @@ sudo pcs property list
 sudo pcs resource create fl_ip ocf:heartbeat:IPaddr2 ip=10.2.0.20 cidr_netmask=16 op monitor interval=5s
 
 - Nginx: Servidor http
-sudo pcs resource create web_server ocf:heartbeat:nginx configfile="/etc/nginx/nginx.conf" op monitor timeout="5s" interval="5s"
+sudo pcs resource create web_server ocf:'heart'beat:nginx configfile="/etc/nginx/nginx.conf" op monitor timeout="5s" interval="5s"
 
 - En ocaciones hay que reiniciar el servicio del nginx
 sudo systemctl start nginx
